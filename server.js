@@ -42,8 +42,12 @@ app.post('/', uploadFile.single('file'), (req, res) => {
 
         libre.convert(file, ".pdf", undefined, (err, done) => {
             if (err) {
-                fs.unlinkSync(req.file.path);
-                fs.unlinkSync(outputFilename);
+                if (req.file.path) {
+                    fs.unlinkSync(req.file.path);
+                }
+                if (outputFilename) {
+                    fs.unlinkSync(outputFilename);
+                }
 
                 return res.send('error in converting ==> ', err);
             }
@@ -52,12 +56,20 @@ app.post('/', uploadFile.single('file'), (req, res) => {
 
             res.download(outputFilename, err => {
                 if (err) {
-                    fs.unlinkSync(req.file.path);
-                    fs.unlinkSync(outputFilename);
+                    if (req.file.path) {
+                        fs.unlinkSync(req.file.path);
+                    }
+                    if (outputFilename) {
+                        fs.unlinkSync(outputFilename);
+                    }
                     return res.send('error in downloading file ==> ', err);
                 }
-                fs.unlinkSync(req.file.path);
-                fs.unlinkSync(outputFilename);
+                if (req.file.path) {
+                    fs.unlinkSync(req.file.path);
+                }
+                if (outputFilename) {
+                    fs.unlinkSync(outputFilename);
+                }
             });
         });
     }else{
