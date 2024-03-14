@@ -31,7 +31,7 @@ const uploadFile = multer({ storage: storage, fileFilter: fileFilter });
 var outputFilename = '';
 
 app.get('/', (req, res) => {
-    res.render('home');
+    return res.render('home');
 })
 
 app.post('/', uploadFile.single('file'), (req, res) => {
@@ -45,7 +45,7 @@ app.post('/', uploadFile.single('file'), (req, res) => {
                 fs.unlinkSync(req.file.path);
                 fs.unlinkSync(outputFilename);
 
-                res.send('error in converting ==> ', err);
+                return res.send('error in converting ==> ', err);
             }
 
             fs.writeFileSync(outputFilename, done);
@@ -54,15 +54,14 @@ app.post('/', uploadFile.single('file'), (req, res) => {
                 if (err) {
                     fs.unlinkSync(req.file.path);
                     fs.unlinkSync(outputFilename);
-                    res.send('error in downloading file ==> ', err);
+                    return res.send('error in downloading file ==> ', err);
                 }
                 fs.unlinkSync(req.file.path);
                 fs.unlinkSync(outputFilename);
-                res.render('home')
             });
         });
     }else{
-        res.send('Thinking of converting blank file 🤔')
+        return res.send('Thinking of converting blank file 🤔')
     }
 });
 
