@@ -67,9 +67,9 @@ app.post('/', uploadFile.single('file'), (req, res) => {
                 if (req.file.path) {
                     fs.unlinkSync(req.file.path);
                 }
-                if (outputFilename) {
-                    fs.unlinkSync(outputFilename);
-                }
+                // if (outputFilename) {
+                //     fs.unlinkSync(outputFilename);
+                // }
             });
         });
     }else{
